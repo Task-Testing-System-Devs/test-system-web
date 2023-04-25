@@ -1,0 +1,380 @@
+.posts-list {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.posts-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.posts-list th, .posts-list td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.posts-list th {
+  background-color: #292929;
+  font-weight: bold;
+  text-align: left;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+
+
+.main-headline {
+  height: 50px;
+  background-color: #2f2f2f;
+  color: #fff;
+  padding: 10px 30px;
+  font-size: 20px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.button {
+  background-color: #EDF8FE;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  color: #292929;
+  font-weight: bold;
+  width: 300px;
+  text-align: center;
+}
+
+.gray {
+  background-color: #454545;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.gray:hover {
+  background-color: #999;
+}
+
+#error-message {
+  display: none;
+  background-color: #ffcccc;
+  color: #ff0000;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#error-message.active {
+  display: block;
+}
+
+
+.login-container {
+  margin: 50px auto;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-container h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  margin-top: 20px;
+}
+
+.profile-container {
+  margin: 50px auto;
+  max-width: 800px;
+  text-align: center;
+}
+
+.profile-container h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.profile-container p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.rating-container {
+  margin: 50px auto;
+  max-width: 800px;
+  text-align: center;
+}
+
+.rating-container h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.rating-box {
+  background-color: #2f2f2f;
+  color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.rating-box h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.rating-box p {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.content {
+  min-height: 100%;
+  margin-bottom: 150px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #2f2f2f;
+  color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+li span:first-child {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.info ul li {
+  display: block;
+}
+
+
+
+
+
+/* Надо почистить */
+
+body {
+  background-color: #292929;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #fff;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 90px;
+  background-color: #252E40;
+  padding: 0 30px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.main-headline {
+  background-color: #3a475d;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.content-container {
+  background-color: #3a475d;
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.task-container {
+  text-align: center;
+  background-color: #252E40;
+}
+
+h2, h3 {
+  margin-bottom: 10px;
+}
+
+pre {
+  background-color: #4f618e;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: left;
+  margin: 0;
+  white-space: pre-wrap; /* Добавьте эту строку */
+}
+
+.difficulty {
+  font-weight: bold;
+}
+
+.submissions {
+  padding-left: 20px;
+  display: inline-block;
+  text-align: left;
+}
+
+.submit-container {
+  margin-top: 20px;
+  display: inline-block;
+  text-align: left;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+}
+
+select {
+  margin-bottom: 10px;
+  display: block;
+}
+
+button[type="submit"] {
+  background-color: #4f618e;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 5px;
+}
+
+button[type="submit"]:hover {
+  background-color: #6c7cb5;
+}
+
+.task-switch {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.task-button {
+  background-color: #4f618e;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 5px;
+}
+
+.task-button:hover {
+  background-color: #6c7cb5;
+}
+.input-example,
+.output-example {
+  display: block;
+  white-space: pre-wrap;
+}
+.io-header {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.task-desc {
+  padding: 30px;
+}
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 70px); /* Вычитаем высоту футера */
+}
+
+main {
+  flex-grow: 1;
+}
