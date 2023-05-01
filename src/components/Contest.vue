@@ -8,10 +8,8 @@
         <div class="content-container">
           <section class="task-container">
             <div class="task-switch">
-              <button class="task-button" id="task1" @click="updateTask(1)">1 - OK</button>
-              <button class="task-button" id="task2" @click="updateTask(2)">2 - WA</button>
-              <button class="task-button" @click="updateTask(3)">3 - N/A</button>
-              <button class="task-button" @click="updateTask(4)">4 - N/A</button>
+              <button class="task-button" id="task1" @click="updateTask(1)">1 - N/A</button>
+              <button class="task-button" id="task2" @click="updateTask(2)">2 - N/A</button>
             </div>
             <h2 id="task-title">{{ taskTitle }}</h2>
             <p id="task-description" class="task-desc">{{ taskDescription }}</p>
@@ -53,7 +51,8 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import {logout} from "@/utils/logout.js";
+import { logout } from "@/utils/logout.js";
+import axios from "axios";
 
 export default {
   name: "Contest",
@@ -63,32 +62,43 @@ export default {
   },
   data() {
     return {
-      taskTitle: "A. Конструктивная задача",
-      taskDescription: "Описание задачи A...",
+      tasks: [],
+      currentTask: null,
+      taskTitle: "",
+      taskDescription: "",
     };
+  },
+  created() {
+    this.fetchTasks();
   },
   methods: {
     handleLogout() {
       logout(this);
     },
+    async fetchTasks() {
+      try {
+        const response = await axios.post("http://37.252.0.155:3000/parseTasks", {});
+        this.tasks = response.data;
+        this.updateTask(1);
+      } catch (error) {
+        console.error("Ошибка при получении задач с сервера:", error);
+      }
+    },
     updateTask(taskNumber) {
-      if (taskNumber === 1) {
-        this.taskTitle = "A. Первая задача";
-        this.taskDescription = "Описание задачи А...";
-      } else if (taskNumber === 2) {
-        this.taskTitle = "B. Вторая задача";
-        this.taskDescription = "Описание задачи B...";
-      } else if (taskNumber === 3) {
-        this.taskTitle = "C. Третья задача";
-        this.taskDescription = "Описание задачи C...";
-      } else if (taskNumber === 4) {
-        this.taskTitle = "D. Четвертая задача";
-        this.taskDescription = "Описание задачи D...";
+      const task = this.tasks.find((task) => task.probId === String(taskNumber));
+      if (task) {
+        this.currentTask = task;
+        this.taskTitle = task.title;
+        this.taskDescription = task.description;
+      } else {
+        this.taskTitle = "";
+        this.taskDescription = "";
       }
     },
   },
 };
 </script>
+
 
 <style>
 .task-container {

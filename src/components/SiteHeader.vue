@@ -7,7 +7,7 @@
         <ul>
           <li><router-link to="/ParcelList">Мои посылки</router-link></li>
           <li><router-link to="/MyContestsList">Мои контесты</router-link></li>
-          <li><router-link to="/rating">Рейтинг</router-link></li>
+          <li><router-link to="/GlobalRating">Рейтинг</router-link></li>
           <li><router-link to="/ContestsList">Все контесты</router-link></li>
         </ul>
       </nav>
