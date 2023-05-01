@@ -22,8 +22,8 @@
           <span class="output-example">2</span>
           </pre>
             <p>Сложность: <span class="difficulty">20</span></p>
-            <h3>Последняя посылка: <span class="last-status">{{solutionStatus}}</span></h3>
-            <h3>Ошибка на тесте: <span class="last-status">{{failureTest}}</span></h3>
+            <h3>Последняя посылка: <span class="last-status">{{ solutionStatus }}</span></h3>
+            <h3>Ошибка на тесте: <span class="last-status">{{ failureTest }}</span></h3>
             <h3>Последние 4 посылки:</h3>
             <ol class="submissions">
               <li>Посылка 1 - RE</li>
@@ -40,6 +40,8 @@
                 <option value="javascript">JavaScript</option>
               </select>
               <button type="submit" @click.prevent="submitSolution">Отправить</button>
+              <!-- Надпись "Обработка..." будет отображаться, когда processing имеет значение true -->
+              <div v-if="processing" class="processing-status">Обработка...</div>
             </div>
           </section>
         </div>
@@ -52,7 +54,7 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import { logout } from "@/utils/logout.js";
+import {logout} from "@/utils/logout.js";
 import axios from "axios";
 
 export default {
@@ -63,6 +65,7 @@ export default {
   },
   data() {
     return {
+      processing: false,
       failureTest: null,
       solutionStatus: null,
       selectedFile: null,
@@ -149,6 +152,7 @@ export default {
       if (this.selectedFile) {
         const base64File = await this.convertFileToBase64(this.selectedFile);
         try {
+          this.processing = true; // Устанавливаем processing в true перед отправкой решения
           const response = await axios.post("http://37.252.0.155:3000/handleSolution", {
             solutionFileBase64: base64File,
             taskID: this.currentTask.probId,
@@ -157,6 +161,8 @@ export default {
           await this.fetchResult(); // Вызываем метод fetchResult после отправки решения
         } catch (error) {
           console.error("Ошибка при отправке решения:", error);
+        } finally {
+          this.processing = false; // Устанавливаем processing в false после получения результата
         }
       } else {
         console.error("Файл не выбран");
@@ -166,7 +172,7 @@ export default {
     async fetchResult() {
       try {
         const response = await axios.get("http://37.252.0.155:3000/getResult");
-        const { status, error } = response.data;
+        const {status, error} = response.data;
         this.solutionStatus = status;
         this.failureTest = error;
       } catch (error) {
@@ -262,6 +268,12 @@ button[type="submit"]:hover {
 .output-example {
   display: block;
   white-space: pre-wrap;
+}
+
+.processing-status {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #37b345;
 }
 
 .io-header {
