@@ -22,7 +22,8 @@
           <span class="output-example">2</span>
           </pre>
             <p>Сложность: <span class="difficulty">20</span></p>
-            <h3>Последняя посылка: <span class="last-status">OK</span></h3>
+            <h3>Последняя посылка: <span class="last-status">{{solutionStatus}}</span></h3>
+            <h3>Ошибка на тесте: <span class="last-status">{{failureTest}}</span></h3>
             <h3>Последние 4 посылки:</h3>
             <ol class="submissions">
               <li>Посылка 1 - RE</li>
@@ -31,14 +32,14 @@
               <li>Посылка 4 - OK</li>
             </ol>
             <div class="submit-container">
-              <input type="file" id="solution" name="solution">
+              <input type="file" id="solution" name="solution" @change="onFileChange">
               <select name="language" id="language">
                 <option value="cpp">C++</option>
                 <option value="python">Python</option>
                 <option value="java">Java</option>
                 <option value="javascript">JavaScript</option>
               </select>
-              <button type="submit">Отправить</button>
+              <button type="submit" @click.prevent="submitSolution">Отправить</button>
             </div>
           </section>
         </div>
@@ -62,6 +63,9 @@ export default {
   },
   data() {
     return {
+      failureTest: null,
+      solutionStatus: null,
+      selectedFile: null,
       tasks: [],
       currentTask: null,
       taskTitle: "",
@@ -77,9 +81,14 @@ export default {
     },
     async fetchTasks() {
       try {
-        const response = await axios.post("http://37.252.0.155:3000/parseTasks", {});
-        this.tasks = response.data;
-        this.updateTask(1);
+        const authData = await this.authenticate();
+        if (authData) {
+          const response = await axios.get("http://37.252.0.155:3000/parseTasks", {});
+          this.tasks = response.data.message;
+          this.updateTask(1);
+        } else {
+          console.error("Не удалось произвести авторизацию");
+        }
       } catch (error) {
         console.error("Ошибка при получении задач с сервера:", error);
       }
@@ -93,6 +102,75 @@ export default {
       } else {
         this.taskTitle = "";
         this.taskDescription = "";
+      }
+    },
+    async authenticate() {
+      try {
+        const authResponse = await axios.post(
+            "http://37.252.0.155:3000/auth",
+            {
+              login: "ejudge",
+              password: "ejudge",
+              "contestID": 1,
+            },
+            {
+              headers: {
+                "Connection": "keep-alive",
+                "Content-Type": "application/json",
+              },
+            }
+        );
+        console.log(authResponse.data);
+        return authResponse.data;
+      } catch (error) {
+        console.error("Ошибка при авторизации:", error);
+        return null;
+      }
+    },
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.selectedFile = file;
+      } else {
+        console.error("Файл не выбран");
+      }
+    },
+
+    async convertFileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = (error) => reject(error);
+      });
+    },
+
+    async submitSolution() {
+      if (this.selectedFile) {
+        const base64File = await this.convertFileToBase64(this.selectedFile);
+        try {
+          const response = await axios.post("http://37.252.0.155:3000/handleSolution", {
+            solutionFileBase64: base64File,
+            taskID: this.currentTask.probId,
+          });
+          console.log(response.data);
+          await this.fetchResult(); // Вызываем метод fetchResult после отправки решения
+        } catch (error) {
+          console.error("Ошибка при отправке решения:", error);
+        }
+      } else {
+        console.error("Файл не выбран");
+      }
+    },
+
+    async fetchResult() {
+      try {
+        const response = await axios.get("http://37.252.0.155:3000/getResult");
+        const { status, error } = response.data;
+        this.solutionStatus = status;
+        this.failureTest = error;
+      } catch (error) {
+        console.error("Ошибка при получении результата:", error);
       }
     },
   },
