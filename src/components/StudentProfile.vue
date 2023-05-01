@@ -1,31 +1,22 @@
 <!-- StudentProfile.vue -->
 <script>
+import {logout} from "@/utils/logout";
+import SiteHeader from "@/components/SiteHeader.vue";
+
 export default {
   name: 'StudentProfile',
+  components: {SiteHeader},
+  methods: {
+    handleLogout() {
+      logout(this);
+    },
+  },
 }
 </script>
 
 <template>
   <div>
-    <header>
-      <div class="header-container">
-        <div class="logo">Лицей НИУ ВШЭ</div>
-        <nav>
-          <ul>
-            <li><a href="#">Моя профиль</a></li>
-            <li><a href="#">Рейтинг</a></li>
-            <li><a href="#">Мои контесты</a></li>
-          </ul>
-        </nav>
-        <div class="username">
-          <a href="#">Иван Иванов</a>
-          <div class="user-menu">
-            <button>Личный кабинет</button>
-            <button>Выйти</button>
-          </div>
-        </div>
-      </div>
-    </header>
+    <site-header></site-header>
     <main class="content">
       <div class="profile-container">
         <h1>Мой профиль</h1>
@@ -71,5 +62,34 @@ export default {
 </template>
 
 <style>
+.rating-container {
+  margin: 50px auto;
+  max-width: 800px;
+  text-align: center;
+}
 
+.rating-container h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.rating-box {
+  background-color: #2f2f2f;
+  color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.rating-box h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.rating-box p {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
 </style>

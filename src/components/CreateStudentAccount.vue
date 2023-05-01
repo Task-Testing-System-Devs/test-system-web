@@ -55,13 +55,6 @@ export default {
     margin-bottom: 20px;
 }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #000000;
-}
-
 .form-group input {
     border: 1px solid #ccc;
     border-radius: 5px;
