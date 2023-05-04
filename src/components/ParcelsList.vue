@@ -2,6 +2,7 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
+
 export default {
   name: "AdminPanel",
   components: {

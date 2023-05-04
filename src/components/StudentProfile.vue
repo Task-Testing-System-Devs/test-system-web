@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export default {
   name: 'StudentProfile',
-  components: { SiteFooter, SiteHeader },
+  components: {SiteFooter, SiteHeader},
   data() {
     return {
       studentInfo: {},

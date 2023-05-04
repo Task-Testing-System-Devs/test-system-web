@@ -2,6 +2,7 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
+
 export default {
   name: "ContestsList",
   components: {
@@ -36,7 +37,11 @@ export default {
                 <td>15.02.2023 - 9:00:00</td>
                 <td>25.02.2023 - 23:59:59</td>
                 <td>4/5</td>
-                <td><router-link to="Contest"><button>Перейти</button></router-link></td>
+                <td>
+                  <router-link to="Contest">
+                    <button>Перейти</button>
+                  </router-link>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -50,30 +55,30 @@ export default {
 
 <style>
 .posts-list button {
-    background-color: #0069d9;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 5px;
-    border-color: #0069d9;
-    color: #ffffff;
-    font-weight: bold;
-    width: 150px;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s, transform 0.3s;
+  background-color: #0069d9;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  border-color: #0069d9;
+  color: #ffffff;
+  font-weight: bold;
+  width: 150px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .posts-list button:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .posts-list button:active {
-    background-color: #004085;
-    transform: translateY(0);
+  background-color: #004085;
+  transform: translateY(0);
 }
 
 .posts-list button:focus {
-    outline: none;
+  outline: none;
 }
 </style>

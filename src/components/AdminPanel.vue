@@ -2,6 +2,7 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
+
 export default {
   name: "AdminPanel",
   components: {
@@ -22,7 +23,7 @@ export default {
           <router-link class="button" to="/CreateStudentAccount">
             <a>Создать аккаунт студента</a>
           </router-link>
-          <router-link class = "button" to="/ImportContest">
+          <router-link class="button" to="/ImportContest">
             <a>Импорт контеста из Ejudge</a>
           </router-link>
         </div>
@@ -38,6 +39,7 @@ export default {
   color: #292929;
   display: block;
 }
+
 .button:hover {
   background-color: #999999;
 }

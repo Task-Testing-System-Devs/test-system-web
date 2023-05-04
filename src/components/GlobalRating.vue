@@ -3,6 +3,7 @@
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
 import axios from 'axios';
+
 export default {
   name: "AdminPanel",
   components: {
@@ -24,7 +25,7 @@ export default {
 
       try {
         const response = await axios.get(endpoint, {
-          headers: { "Authorization": `Bearer ${token}` }
+          headers: {"Authorization": `Bearer ${token}`}
         });
         console.log(response);
         this.ratingData = response.data;

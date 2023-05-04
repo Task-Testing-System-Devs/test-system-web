@@ -79,7 +79,7 @@ export default {
             <input type="password" id="password" name="password" v-model="password" required>
           </div>
           <button id="login-button" type="submit" class="button center gray">Войти</button>
-          <div id="error-message" class="error-message">{{errorMessage}}</div>
+          <div id="error-message" class="error-message">{{ errorMessage }}</div>
         </form>
         <p>Нет аккаунта? <a href="#">Свяжитесь с преподавателем</a></p>
       </div>
