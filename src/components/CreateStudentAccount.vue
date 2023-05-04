@@ -20,13 +20,17 @@ export default {
     <main>
       <div class="form-container">
         <h2>Создание профиля</h2>
-        <form>
+        <form @submit.prevent="register">
           <div class="form-group">
             <label for="first-name">Имя:</label>
-            <input type="text" id="first-name" name="first-name" required>
+            <input type="text" id="first-name" name="first-name" v-model="firstName" required>
           </div>
           <div class="form-group">
             <label for="last-name">Фамилия:</label>
+            <input type="text" id="last-name" name="last-name" required>
+          </div>
+          <div class="form-group">
+            <label for="last-name">Отчество:</label>
             <input type="text" id="last-name" name="last-name" required>
           </div>
           <div class="form-group">
@@ -34,8 +38,20 @@ export default {
             <input type="email" id="email" name="email" required>
           </div>
           <div class="form-group">
+            <label for="email">Роль:</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
             <label for="password">Пароль:</label>
             <input type="password" id="password" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Направление:</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Группа:</label>
+            <input type="email" id="email" name="email" required>
           </div>
           <button type="submit" class="btn-save">Сохранить</button>
         </form>

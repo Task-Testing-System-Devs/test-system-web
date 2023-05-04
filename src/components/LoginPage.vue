@@ -103,12 +103,6 @@ form {
 .form-group {
   margin-bottom: 20px;
 }
-.form-group label {
-   display: block;
-   font-weight: bold;
-   margin-bottom: 5px;
-   color: #fff;
- }
 
 label {
   display: block;

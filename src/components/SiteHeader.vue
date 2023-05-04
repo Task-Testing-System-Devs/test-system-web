@@ -14,7 +14,7 @@
       <div class="username">
         <a href="#">Иван Иванов</a>
         <div class="user-menu">
-          <router-link v-if="userRole === 'admin'" to="/AdminPanel"><button>Админ-панель</button></router-link>
+          <router-link v-if="userRole === 'teacher'" to="/AdminPanel"><button>Админ-панель</button></router-link>
           <router-link v-else to="/StudentProfile"><button>Личный кабинет</button></router-link>
           <button @click="handleLogout">Выйти</button>
         </div>
