@@ -3,6 +3,9 @@
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
 import { logout } from "@/utils/logout.js";
+import axios from "axios";
+
+
 export default {
   name: "ImportContest",
   components: {
@@ -10,6 +13,29 @@ export default {
     SiteFooter
   },
   methods: {
+    async importContest() {
+      try {
+        // Авторизация
+        const authResponse = await axios.post(
+            "http://37.252.0.155:3000/auth",
+            {
+              login: "ejudge",
+              password: "ejudge",
+              contestID: this.contestId,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+        );
+        const response = await axios.get("http://37.252.0.155:3000/parseTasks", {});
+        this.tasks = response.data.message;
+        console.log(response.data.message);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     handleLogout() {
       logout(this);
     },
@@ -24,10 +50,10 @@ export default {
     <main>
       <div class="form-container">
         <h2>Импорт контеста из Ejudge по ID</h2>
-        <form>
+        <form @submit.prevent="importContest">
           <div class="form-group">
             <label for="contestId">ID:</label>
-            <input type="text" id="contestId-name" name="contestId" required placeholder="12345">
+            <input type="text" id="contestId-name" name="contestId" required placeholder="12345" v-model="contestId">
           </div>
           <button type="submit" class="btn-save">Импортировать</button>
         </form>
