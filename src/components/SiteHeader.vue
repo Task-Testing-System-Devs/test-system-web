@@ -15,7 +15,7 @@
         <a href="#">Иван Иванов</a>
         <div class="user-menu">
           <router-link to="/AdminPanel"><button>Админ-панель</button></router-link>
-          <button @click="$emit('logout')">Выйти</button>
+          <button @click="handleLogout">Выйти</button>
         </div>
       </div>
     </div>
@@ -23,9 +23,21 @@
 </template>
 
 <script>
+import {logout} from "@/utils/logout";
+import checkAuth from "@/utils/checkAuth";
+
 export default {
+  created() {
+    checkAuth(this.$router);
+  },
   name: "SiteHeader",
+  methods: {
+    handleLogout() {
+      logout(this);
+    },
+  },
 };
+
 </script>
 
 <style>

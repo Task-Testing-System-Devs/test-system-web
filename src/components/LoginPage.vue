@@ -26,11 +26,10 @@ export default {
           }
         });
         console.log('Response data:', response.data);
-        localStorage.setItem('token', response.data);
+        localStorage.setItem('token', response.data.token);
         if (response.data) {
-          // const userType = response.data.userType;
-          const userType = 'student';
-          if (userType === 'student') {
+          const role = response.data.role;
+          if (role === 'student') {
             this.$router.push('/StudentProfile');
           } else if (userType === 'admin') {
             this.$router.push('/AdminPanel');
@@ -52,7 +51,8 @@ export default {
         }
       }
     }
-  }
+  },
+
 }
 </script>
 

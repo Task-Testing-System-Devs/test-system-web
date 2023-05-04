@@ -9,11 +9,6 @@ export default {
     SiteHeader,
     SiteFooter
   },
-  methods: {
-    handleLogout() {
-      logout(this);
-    },
-  },
 };
 </script>
 
@@ -28,7 +23,9 @@ export default {
           <router-link class="button" to="/CreateStudentAccount">
             <a>Создать аккаунт студента</a>
           </router-link>
-          <a href="#" class="button">Импорт контеста из ejudge</a>
+          <router-link class = "button" to="/ImportContest">
+            <a>Импорт контеста из Ejudge</a>
+          </router-link>
         </div>
       </main>
       <site-footer></site-footer>

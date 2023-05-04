@@ -8,6 +8,7 @@ import ContestsList from "./components/AllContestsList.vue";
 import MyContestsList from "./components/MyContestsList.vue";
 import Contest from "./components/Contest.vue";
 import GlobalRating from "./components/GlobalRating.vue";
+import ImportContest from "@/components/ImportContest.vue";
 
 
 const routes = [
@@ -20,6 +21,7 @@ const routes = [
     { path: '/MyContestsList', component: MyContestsList },
     { path: '/Contest', component: Contest },
     { path: '/GlobalRating', component: GlobalRating },
+    { path: '/ImportContest', component: ImportContest },
 ]
 
 const router = createRouter({

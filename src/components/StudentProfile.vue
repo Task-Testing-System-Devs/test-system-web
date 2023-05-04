@@ -2,6 +2,7 @@
 <script>
 import {logout} from "@/utils/logout";
 import SiteHeader from "@/components/SiteHeader.vue";
+import checkAuth from "@/utils/checkAuth";
 
 export default {
   name: 'StudentProfile',
