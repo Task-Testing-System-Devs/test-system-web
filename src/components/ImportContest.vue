@@ -2,7 +2,6 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import { logout } from "@/utils/logout.js";
 import axios from "axios";
 
 
@@ -35,9 +34,6 @@ export default {
       } catch (error) {
         console.error(error);
       }
-    },
-    handleLogout() {
-      logout(this);
     },
   },
 };

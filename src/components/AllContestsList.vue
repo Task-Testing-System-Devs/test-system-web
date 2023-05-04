@@ -2,7 +2,6 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import { logout } from "@/utils/logout.js";
 export default {
   name: "ContestsList",
   components: {
@@ -10,16 +9,13 @@ export default {
     SiteFooter
   },
   methods: {
-    handleLogout() {
-      logout(this);
-    },
   },
 };
 </script>
 
 <template>
   <div>
-    <site-header @logout="handleLogout"></site-header>
+    <site-header></site-header>
     <div class="content-wrapper">
       <main>
         <div class="main-headline">Список контестов</div>

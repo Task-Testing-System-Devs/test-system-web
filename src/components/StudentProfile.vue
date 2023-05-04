@@ -1,18 +1,41 @@
 <!-- StudentProfile.vue -->
 <script>
-import {logout} from "@/utils/logout";
 import SiteHeader from "@/components/SiteHeader.vue";
-import checkAuth from "@/utils/checkAuth";
+import SiteFooter from "@/components/SiteFooter.vue";
+import axios from 'axios';
 
 export default {
   name: 'StudentProfile',
-  components: {SiteHeader},
+  components: { SiteFooter, SiteHeader },
+  data() {
+    return {
+      studentInfo: {},
+    };
+  },
   methods: {
     handleLogout() {
       logout(this);
     },
+    async getStudentInfo() {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get('http://37.252.0.155:8080/api/profile/get-student-info', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.headers);
+        this.studentInfo = response.data;
+      } catch (error) {
+        console.error('Ошибка при получении информации о профиле студента:', error);
+      }
+    },
   },
-}
+  async mounted() {
+    await this.getStudentInfo();
+  },
+};
 </script>
 
 <template>
@@ -21,44 +44,33 @@ export default {
     <main class="content">
       <div class="profile-container">
         <h1>Мой профиль</h1>
-        <p>Имя: Иван Иванов</p>
-        <p>Направление: Программная инженерия</p>
-        <p>Группа: ПИ17-1</p>
+        <p>Имя: {{ studentInfo.first_name }} {{ studentInfo.last_name }}</p>
+        <p>Направление: {{ studentInfo.department }}</p>
+        <p>Группа: {{ studentInfo.group }}</p>
       </div>
       <div class="info">
         <h2>Личная информация</h2>
         <ul>
-          <li><span>ID:</span> <span id="id"></span></li>
-          <li><span>Эл.почта:</span> <span id="mail"></span></li>
-          <li><span>Класс:</span> <span id="class"></span></li>
-          <li><span>Программа:</span> <span id="program"></span></li>
-          <li><span>Группа:</span> <span id="group"></span></li>
-          <li><span>Всего решено заданий:</span> <span id="tasks"></span></li>
-          <li><span>Рейтинг по заданиям:</span> <span id="task-rating"></span></li>
-          <li><span>Рейтинг по оценкам:</span> <span id="grade-rating"></span></li>
+          <li><span>ID:</span> <span>{{ studentInfo.id }}</span></li>
+          <li><span>Эл.почта:</span> <span>{{ studentInfo.email }}</span></li>
+          <li><span>Класс:</span> <span>{{ studentInfo.department }}</span></li>
+          <li><span>Программа:</span> <span>{{ studentInfo.department }}</span></li>
+          <li><span>Группа:</span> <span>{{ studentInfo.group }}</span></li>
         </ul>
       </div>
       <div class="rating-container">
         <h1>Мой рейтинг</h1>
         <div class="rating-box">
-          <h2>Место в рейтинге по направлению</h2>
+          <h2>Место в рейтинге по оценкам</h2>
           <p>5</p>
         </div>
         <div class="rating-box">
-          <h2>Место в рейтинге по группе</h2>
+          <h2>Место в рейтинге по задачам</h2>
           <p>2</p>
-        </div>
-        <div class="rating-box">
-          <h2>Место в общем рейтинге</h2>
-          <p>12</p>
         </div>
       </div>
     </main>
-    <footer>
-      <div id="footer" class="footer-container">
-        <p>2023 Лицей НИУ ВШЭ.</p>
-      </div>
-    </footer>
+    <site-footer></site-footer>
   </div>
 </template>
 

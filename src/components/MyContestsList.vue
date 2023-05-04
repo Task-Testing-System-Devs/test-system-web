@@ -2,17 +2,11 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import { logout } from "@/utils/logout.js";
 export default {
   name: "ContestsList",
   components: {
     SiteHeader,
     SiteFooter
-  },
-  methods: {
-    handleLogout() {
-      logout(this);
-    },
   },
 };
 </script>

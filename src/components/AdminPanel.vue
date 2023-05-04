@@ -2,7 +2,6 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import { logout } from "@/utils/logout.js";
 export default {
   name: "AdminPanel",
   components: {
@@ -14,7 +13,7 @@ export default {
 
 <template>
   <div>
-    <site-header @logout="handleLogout"></site-header>
+    <site-header></site-header>
     <div class="content-wrapper">
       <main>
         <div class="main-headline">Админ-панель преподавателя</div>

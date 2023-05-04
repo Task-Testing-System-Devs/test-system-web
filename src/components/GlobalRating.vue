@@ -2,7 +2,6 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import { logout } from "@/utils/logout.js";
 import axios from 'axios';
 export default {
   name: "AdminPanel",
@@ -17,9 +16,6 @@ export default {
     };
   },
   methods: {
-    handleLogout() {
-      logout(this);
-    },
     async getRatingData() {
       const token = localStorage.getItem('token');
       const endpoint = this.ratingType === 'marks'
@@ -115,11 +111,6 @@ export default {
 
 .main-headline button:hover {
   background-color: #ddd;
-}
-
-.main-headline button.active {
-  background-color: #4CAF50;
-  color: #fff;
 }
 
 .myposts-container {

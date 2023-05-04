@@ -1,8 +1,7 @@
-<!-- CreateStudetAccount.vue -->
+<!-- CreateStudentAccount.vue -->
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import { logout } from "@/utils/logout.js";
 export default {
   name: "AdminPanel",
   components: {
@@ -10,9 +9,6 @@ export default {
     SiteFooter
   },
   methods: {
-    handleLogout() {
-      logout(this);
-    },
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <!-- AdminPanel.vue -->
 <template>
   <div>
-    <site-header @logout="handleLogout"></site-header>
+    <site-header></site-header>
     <div class="content-wrapper">
       <main>
         <div class="main-headline">Контест 1</div>
@@ -54,7 +54,6 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
-import {logout} from "@/utils/logout.js";
 import axios from "axios";
 
 export default {
@@ -79,9 +78,6 @@ export default {
     this.fetchTasks();
   },
   methods: {
-    handleLogout() {
-      logout(this);
-    },
     async fetchTasks() {
       try {
         const authData = await this.authenticate();
