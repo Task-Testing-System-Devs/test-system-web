@@ -14,7 +14,8 @@
       <div class="username">
         <a href="#">Иван Иванов</a>
         <div class="user-menu">
-          <router-link to="/AdminPanel"><button>Админ-панель</button></router-link>
+          <router-link v-if="userRole === 'admin'" to="/AdminPanel"><button>Админ-панель</button></router-link>
+          <router-link v-else to="/StudentProfile"><button>Личный кабинет</button></router-link>
           <button @click="handleLogout">Выйти</button>
         </div>
       </div>
@@ -31,6 +32,11 @@ export default {
     checkAuth(this.$router);
   },
   name: "SiteHeader",
+  data() {
+    return {
+      userRole: localStorage.getItem('role'),
+    };
+  },
   methods: {
     handleLogout() {
       logout(this);
@@ -39,6 +45,7 @@ export default {
 };
 
 </script>
+
 
 <style>
 .user-menu button {

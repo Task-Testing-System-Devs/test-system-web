@@ -23,13 +23,14 @@ export default {
     async getRatingData() {
       const token = localStorage.getItem('token');
       const endpoint = this.ratingType === 'marks'
-          ? '37.252.0.155:8080/api/grade/by-marks'
-          : '37.252.0.155:8080/api/grade/by-tasks-amount';
+          ? 'http://37.252.0.155:8080/api/grade/by-marks'
+          : 'http://37.252.0.155:8080/api/grade/by-tasks-amount';
 
       try {
         const response = await axios.get(endpoint, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { "Authorization": `Bearer ${token}` }
         });
+        console.log(response);
         this.ratingData = response.data;
       } catch (error) {
         console.error('Ошибка при получении рейтинга:', error);

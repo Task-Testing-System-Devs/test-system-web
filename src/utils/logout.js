@@ -1,5 +1,5 @@
 // src/utils/logout.js
 export async function logout(vm) {
-    localStorage.removeItem('token');
+    localStorage.clear();
     vm.$router.push('/');
 }

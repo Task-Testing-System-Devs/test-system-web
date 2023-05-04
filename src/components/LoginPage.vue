@@ -29,6 +29,7 @@ export default {
         localStorage.setItem('token', response.data.token);
         if (response.data) {
           const role = response.data.role;
+          localStorage.setItem('role', response.data.role);
           if (role === 'student') {
             this.$router.push('/StudentProfile');
           } else if (userType === 'admin') {
