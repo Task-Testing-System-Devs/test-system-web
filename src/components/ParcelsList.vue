@@ -21,7 +21,7 @@ export default {
     methods: {
         async fetchParcels() {
             try {
-                const userRole = localStorage.getItem('userRole'); // Получаем роль пользователя
+                const userRole = localStorage.getItem('role'); // Получаем роль пользователя
                 const endpoint = userRole === 'teacher' ? 'get-all' : 'get-all-user'; // Определяем эндпоинт в зависимости от роли пользователя
                 const response = await axios.get(`http://37.252.0.155:8080/api/solutions/${endpoint}`, {
                     headers: {
