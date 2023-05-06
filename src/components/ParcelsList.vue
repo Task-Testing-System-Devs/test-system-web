@@ -1,4 +1,5 @@
 <!-- ParcelsList.vue -->
+// ParcelsList.vue
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
@@ -20,7 +21,9 @@ export default {
     methods: {
         async fetchParcels() {
             try {
-                const response = await axios.get("http://37.252.0.155:8080/api/solutions/get-all", {
+                const userRole = localStorage.getItem('userRole'); // Получаем роль пользователя
+                const endpoint = userRole === 'teacher' ? 'get-all' : 'get-all-user'; // Определяем эндпоинт в зависимости от роли пользователя
+                const response = await axios.get(`http://37.252.0.155:8080/api/solutions/${endpoint}`, {
                     headers: {
                         "Authorization": `Bearer ${localStorage.getItem('token')}`
                     }
