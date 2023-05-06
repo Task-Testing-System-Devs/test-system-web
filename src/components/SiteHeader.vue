@@ -1,26 +1,95 @@
 <!-- SiteHeader.vue -->
+<script>
+import {logout} from "@/utils/logout";
+import checkAuth from "@/utils/checkAuth";
+import axios from "axios";
+
+export default {
+  created() {
+    checkAuth(this.$router);
+    if (this.userRole === "teacher") {
+      this.fetchTeacherInfo();
+    } else if (this.userRole === "student") {
+      this.fetchStudentInfo();
+    }
+  },
+  name: "SiteHeader",
+  data() {
+    return {
+      userRole: localStorage.getItem('role'),
+      user: {
+        id: "",
+        first_name: "",
+        last_name: "",
+        middle_name: "",
+        email: "",
+        department: "",
+        group: ""
+      },
+    };
+  },
+  methods: {
+    handleLogout() {
+      logout(this);
+    },
+    async fetchTeacherInfo() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://37.252.0.155:8080/api/profile/get-teacher-info", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.user = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async fetchStudentInfo() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://37.252.0.155:8080/api/profile/get-student-info", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.user = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  },
+};
+
+</script>
+
 <template>
   <header>
     <div class="header-container">
-      <div class="logo">Лицей НИУ ВШЭ</div>
-      <nav>
-        <ul>
-          <li>
-            <router-link to="/ParcelList">Мои посылки</router-link>
-          </li>
-          <li>
-            <router-link to="/MyContestsList">Мои контесты</router-link>
-          </li>
-          <li>
-            <router-link to="/GlobalRating">Рейтинг</router-link>
-          </li>
-          <li>
-            <router-link to="/ContestsList">Все контесты</router-link>
-          </li>
-        </ul>
-      </nav>
+      <div class="left-section">
+        <img class="logo" src="../assets/logo.svg" width="75" height="75" alt="logo"/>
+        <div class="logo">Лицей НИУ ВШЭ</div>
+      </div>
+      <div class="nav-container">
+        <nav>
+          <ul>
+            <li>
+              <router-link to="/ParcelList">Мои посылки</router-link>
+            </li>
+            <li>
+              <router-link to="/MyContestsList">Мои контесты</router-link>
+            </li>
+            <li>
+              <router-link to="/GlobalRating">Рейтинг</router-link>
+            </li>
+            <li>
+              <router-link to="/ContestsList">Все контесты</router-link>
+            </li>
+          </ul>
+        </nav>
+      </div>
       <div class="username">
-        <a href="#">Иван Иванов</a>
+        <a href="#">{{ user.first_name }} {{ user.middle_name }}</a>
         <div class="user-menu">
           <router-link v-if="userRole === 'teacher'" to="/AdminPanel">
             <button>Админ-панель</button>
@@ -35,38 +104,52 @@
   </header>
 </template>
 
-<script>
-import {logout} from "@/utils/logout";
-import checkAuth from "@/utils/checkAuth";
-
-export default {
-  created() {
-    checkAuth(this.$router);
-  },
-  name: "SiteHeader",
-  data() {
-    return {
-      userRole: localStorage.getItem('role'),
-    };
-  },
-  methods: {
-    handleLogout() {
-      logout(this);
-    },
-  },
-};
-
-</script>
-
-
 <style>
+.left-section {
+  display: flex;
+  align-items: center;
+}
+
+.left-section img {
+  margin-right: 20px;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 90px;
+  background-color: #252E40;
+  padding: 0 30px;
+  position: relative;
+}
+
+.nav-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
 .user-menu button {
   background-color: #0069d9;
   border-radius: 5px;
   border-color: #0069d9;
   color: #ffffff;
   font-weight: bold;
-  width: 150px;
+  width: 200px;
   text-align: center;
   text-decoration: none;
   transition: background-color 0.3s, transform 0.3s;
@@ -116,7 +199,7 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 150px;
+  width: 200px;
   background-color: #2f2f2f;
   transition: all 0.5s ease;
   border-radius: 5px;

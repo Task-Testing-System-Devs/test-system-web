@@ -9,10 +9,32 @@ export default {
     return {
       email: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      teacher: {
+        id: "",
+        first_name: "",
+        last_name: "",
+        middle_name: "",
+        email: "",
+        department: "",
+        group: ""
+      }
     };
   },
   methods: {
+    async fetchTeacherInfo() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://37.252.0.155:8080/api/profile/get-teacher-info", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.teacher = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async submitForm() {
       const requestData = {
         email: this.email,
@@ -33,6 +55,9 @@ export default {
           if (role === 'student') {
             this.$router.push('/StudentProfile');
           } else if (role === 'teacher') {
+            await this.fetchTeacherInfo();
+            localStorage.setItem('name', this.teacher.first_name);
+            localStorage.setItem('lastname', this.teacher.last_name);
             this.$router.push('/AdminPanel');
           } else {
             this.errorMessage = 'Неизвестный тип пользователя';
