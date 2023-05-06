@@ -18,6 +18,12 @@ export default {
             selectedCode: ''
         };
     },
+    computed: {
+        mainHeadline() {
+            const userRole = localStorage.getItem('role');
+            return userRole === 'teacher' ? 'Все посылки' : 'Мои посылки';
+        }
+    },
     methods: {
         async fetchParcels() {
             try {
@@ -52,7 +58,7 @@ export default {
     <site-header @logout="handleLogout"></site-header>
     <div class="content-wrapper">
       <main>
-        <div class="main-headline">Мои посылки</div>
+        <div class="main-headline">{{ mainHeadline }}</div>
         <div class="myposts-container">
           <p>Общее количество посылок: {{parcels.length}}</p>
           <div class="posts-list">
