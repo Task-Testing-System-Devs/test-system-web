@@ -54,7 +54,7 @@ export default {
           <button @click="changeRating('tasks')">Рейтинг по задачам</button>
         </div>
         <div class="myposts-container">
-          <p>Общее количество человек:</p>
+          <p>Общее количество человек: {{ratingData.length}}</p>
           <div class="posts-list">
             <table>
               <thead>
@@ -70,8 +70,8 @@ export default {
               </thead>
               <tbody>
               <tr v-for="item in ratingData" :key="item.id">
-                <td>{{ item.userShortInfo.firstName }}</td>
                 <td>{{ item.userShortInfo.lastName }}</td>
+                <td>{{ item.userShortInfo.firstName }}</td>
                 <td>{{ item.userShortInfo.middleName }}</td>
                 <td>{{ item.userShortInfo.email }}</td>
                 <td>{{ item.userShortInfo.role }}</td>
@@ -137,9 +137,5 @@ th, td {
 th {
   background-color: #4CAF50;
   color: #fff;
-}
-
-tr:hover {
-  background-color: #f5f5f5;
 }
 </style>
