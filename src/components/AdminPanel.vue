@@ -60,7 +60,6 @@ export default {
           <p>Группа: {{ teacher.group }}</p>
         </div>
         <div class="button-container">
-          <a href="#" class="button">Список всех посылок</a>
           <router-link class="button" to="/CreateStudentAccount">
             <a>Создать аккаунт студента</a>
           </router-link>
@@ -75,10 +74,12 @@ export default {
 </template>
 
 <style>
+.button-container {
+    margin-bottom: 50px;
+}
 
 .teacher-info {
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .teacher-info h2 {
