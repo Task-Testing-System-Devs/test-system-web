@@ -5,42 +5,42 @@ import SiteHeader from "@/components/SiteHeader.vue";
 import axios from "axios";
 
 export default {
-  name: "AdminPanel",
-  components: {
-    SiteHeader,
-    SiteFooter
-  },
-  data() {
-    return {
-      parcels: [],
-      modalOpen: false,
-      selectedCode: ''
-    };
-  },
-  methods: {
-    async fetchParcels() {
-      try {
-        const response = await axios.get("http://37.252.0.155:8080/api/solutions/get-all", {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        this.parcels = response.data;
-      } catch (error) {
-        console.error(error);
-      }
+    name: "AdminPanel",
+    components: {
+        SiteHeader,
+        SiteFooter
     },
-    openCodeModal(code) {
-      this.selectedCode = code;
-      this.modalOpen = true;
+    data() {
+        return {
+            parcels: [],
+            modalOpen: false,
+            selectedCode: ''
+        };
     },
-    closeModal() {
-      this.modalOpen = false;
+    methods: {
+        async fetchParcels() {
+            try {
+                const response = await axios.get("http://37.252.0.155:8080/api/solutions/get-all", {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                this.parcels = response.data;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        openCodeModal(code) {
+            this.selectedCode = code;
+            this.modalOpen = true;
+        },
+        closeModal() {
+            this.modalOpen = false;
+        },
     },
-  },
-  created() {
-    this.fetchParcels();
-  }
+    created() {
+        this.fetchParcels();
+    }
 };
 </script>
 
@@ -63,6 +63,7 @@ export default {
             <table>
               <thead>
               <tr>
+                <th>ID</th> <!-- Добавлен столбец для ID -->
                 <th>Просмотреть код</th>
                 <th>Язык</th>
                 <th>Статус</th>
@@ -75,6 +76,7 @@ export default {
               </thead>
               <tbody>
               <tr v-for="(parcel, index) in parcels" :key="index">
+                <td>{{ parcel.id }}</td>
                 <td>
                   <button @click="openCodeModal(parcel.code)">Просмотреть код</button>
                 </td>

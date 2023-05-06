@@ -73,8 +73,11 @@ export default {
       <div class="nav-container">
         <nav>
           <ul>
-            <li>
+            <li v-if="userRole === 'student'">
               <router-link to="/ParcelList">Мои посылки</router-link>
+            </li>
+            <li v-else-if="userRole === 'teacher'">
+              <router-link to="/ParcelList">Все посылки</router-link>
             </li>
             <li>
               <router-link to="/MyContestsList">Мои контесты</router-link>
