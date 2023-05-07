@@ -3,6 +3,7 @@
 import {logout} from "@/utils/logout";
 import checkAuth from "@/utils/checkAuth";
 import axios from "axios";
+import {fetchUserRole} from "@/utils/getRole";
 
 export default {
   created() {
@@ -12,6 +13,7 @@ export default {
     } else if (this.userRole === "student") {
       this.fetchStudentInfo();
     }
+    fetchUserRole(localStorage.getItem('token'));
   },
   name: "SiteHeader",
   data() {
