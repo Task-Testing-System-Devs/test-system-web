@@ -1,55 +1,4 @@
-<!-- AdminPanel.vue -->
-<template>
-  <div>
-    <site-header></site-header>
-    <div class="content-wrapper">
-      <main>
-        <div class="main-headline">Контест 1</div>
-        <div class="content-container">
-          <section class="task-container">
-            <div class="task-switch">
-              <button class="task-button" id="task1" @click="updateTask(1)">1 - N/A</button>
-              <button class="task-button" id="task2" @click="updateTask(2)">2 - N/A</button>
-            </div>
-            <h2 id="task-title">{{ taskTitle }}</h2>
-            <p id="task-description" class="task-desc">{{ taskDescription }}</p>
-            <h3>Примеры входных и выходных данных:</h3>
-            <pre id="task-io">
-          <span class="io-header">Ввод:</span>
-          <span class="input-example">4 3 1 2 1 4 0 2 2 0 4 3 2 0 2 1 0
-            </span>
-          <span class="io-header">Вывод:</span>
-          <span class="output-example">2</span>
-          </pre>
-            <p>Сложность: <span class="difficulty">20</span></p>
-            <h3>Последняя посылка: <span class="last-status">{{ solutionStatus }}</span></h3>
-            <h3>Ошибка на тесте: <span class="last-status">{{ failureTest }}</span></h3>
-            <h3>Последние 4 посылки:</h3>
-            <ol class="submissions">
-              <li>Посылка 1 - RE</li>
-              <li>Посылка 2 - WA1</li>
-              <li>Посылка 3 - WA9</li>
-              <li>Посылка 4 - OK</li>
-            </ol>
-            <div class="submit-container">
-              <input type="file" id="solution" name="solution" @change="onFileChange">
-              <select name="language" id="language">
-                <option value="cpp">C++</option>
-                <option value="python">Python</option>
-                <option value="java">Java</option>
-                <option value="javascript">JavaScript</option>
-              </select>
-              <button type="submit" @click.prevent="submitSolution">Отправить</button>
-              <!-- Надпись "Обработка..." будет отображаться, когда processing имеет значение true -->
-              <div v-if="processing" class="processing-status">Обработка...</div>
-            </div>
-          </section>
-        </div>
-      </main>
-      <site-footer></site-footer>
-    </div>
-  </div>
-</template>
+<!-- Contest.vue -->
 
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
@@ -179,6 +128,57 @@ export default {
 };
 </script>
 
+<template>
+  <div>
+    <site-header></site-header>
+    <div class="content-wrapper">
+      <main>
+        <div class="main-headline">Контест 1</div>
+        <div class="content-container">
+          <section class="task-container">
+            <div class="task-switch">
+              <button class="task-button" id="task1" @click="updateTask(1)">1 - N/A</button>
+              <button class="task-button" id="task2" @click="updateTask(2)">2 - N/A</button>
+            </div>
+            <h2 id="task-title">{{ taskTitle }}</h2>
+            <p id="task-description" class="task-desc">{{ taskDescription }}</p>
+            <h3>Примеры входных и выходных данных:</h3>
+            <pre id="task-io">
+          <span class="io-header">Ввод:</span>
+          <span class="input-example">4 3 1 2 1 4 0 2 2 0 4 3 2 0 2 1 0
+            </span>
+          <span class="io-header">Вывод:</span>
+          <span class="output-example">2</span>
+          </pre>
+            <p>Сложность: <span class="difficulty">20</span></p>
+            <h3>Последняя посылка: <span class="last-status">{{ solutionStatus }}</span></h3>
+            <h3>Ошибка на тесте: <span class="last-status">{{ failureTest }}</span></h3>
+            <h3>Последние 4 посылки:</h3>
+            <ol class="submissions">
+              <li>Посылка 1 - RE</li>
+              <li>Посылка 2 - WA1</li>
+              <li>Посылка 3 - WA9</li>
+              <li>Посылка 4 - OK</li>
+            </ol>
+            <div class="submit-container">
+              <input type="file" id="solution" name="solution" @change="onFileChange">
+              <select name="language" id="language">
+                <option value="cpp">C++</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="javascript">JavaScript</option>
+              </select>
+              <button type="submit" @click.prevent="submitSolution">Отправить</button>
+              <!-- Надпись "Обработка..." будет отображаться, когда processing имеет значение true -->
+              <div v-if="processing" class="processing-status">Обработка...</div>
+            </div>
+          </section>
+        </div>
+      </main>
+      <site-footer></site-footer>
+    </div>
+  </div>
+</template>
 
 <style>
 .task-container {

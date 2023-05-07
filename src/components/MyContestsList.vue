@@ -62,7 +62,7 @@ export default {
                 <td>{{ new Date(contest.start_time).toLocaleString() }}</td>
                 <td>{{ new Date(contest.finish_time).toLocaleString() }}</td>
                 <td>
-                  <router-link :to="{ name: 'Contest', params: { contestId: contest.ejudge_id } }">
+                  <router-link :to="{ name: 'Contest', params: { id: contest.id } }">
                     <button>Перейти</button>
                   </router-link>
                 </td>
