@@ -59,6 +59,7 @@ export default {
           classification_title: "type_1"
         }));
         const contestData = {
+          ejudge_id: this.contestId,
           title: this.contestName,
           start_time: this.startTime,
           finish_time: this.endTime,

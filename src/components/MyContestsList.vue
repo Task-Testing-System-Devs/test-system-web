@@ -2,12 +2,34 @@
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";
+import axios from "axios";
 
 export default {
   name: "ContestsList",
   components: {
     SiteHeader,
-    SiteFooter
+    SiteFooter,
+  },
+  data() {
+    return {
+      contests: [],
+    };
+  },
+  methods: {
+    async fetchContests() {
+      try {
+        const response = await axios.get("http://37.252.0.155:8080/api/contest/get-all");
+        this.contests = response.data;
+        response.data.forEach((contest) => {
+          localStorage.setItem(`contest-${contest.ejudge_id}-tasks`, JSON.stringify(contest.tasks));
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+  created() {
+    this.fetchContests();
   },
 };
 </script>
@@ -19,26 +41,26 @@ export default {
       <main>
         <div class="main-headline">Мои контесты</div>
         <div class="myposts-container">
-          <p>Всего контестов в системе: 3</p>
+          <p>Всего контестов в системе: {{ contests.length }}</p>
           <div class="posts-list">
             <table>
               <thead>
               <tr>
+                <th>ID в Ejudge</th>
                 <th>Название контеста</th>
                 <th>Дата начала</th>
                 <th>Дата окончания</th>
-                <th>Решено задач</th>
                 <th>Ссылка на контест</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>Контест 1 - Жадные алгоритмы</td>
-                <td>15.02.2023 - 9:00:00</td>
-                <td>25.02.2023 - 23:59:59</td>
-                <td>4/5</td>
+              <tr v-for="(contest, index) in contests" :key="index">
+                <td>{{ contest.ejudge_id }}</td>
+                <td>{{ contest.title }}</td>
+                <td>{{ new Date(contest.start_time).toLocaleString() }}</td>
+                <td>{{ new Date(contest.finish_time).toLocaleString() }}</td>
                 <td>
-                  <router-link to="Contest">
+                  <router-link :to="{ name: 'Contest', params: { contestId: contest.ejudge_id } }">
                     <button>Перейти</button>
                   </router-link>
                 </td>
