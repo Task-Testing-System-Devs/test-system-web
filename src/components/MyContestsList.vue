@@ -25,9 +25,6 @@ export default {
           }
         });
         this.contests = response.data;
-        response.data.forEach((contest) => {
-          localStorage.setItem(`contest-${contest.ejudge_id}-tasks`, JSON.stringify(contest.tasks));
-        });
       } catch (error) {
         console.error(error);
       }
@@ -79,6 +76,7 @@ export default {
     </div>
   </div>
 </template>
+
 
 <style>
 .posts-list button {

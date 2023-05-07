@@ -75,7 +75,7 @@ export default {
 
 <style>
 .button-container {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 
 .teacher-info {
