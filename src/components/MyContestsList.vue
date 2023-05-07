@@ -18,7 +18,12 @@ export default {
   methods: {
     async fetchContests() {
       try {
-        const response = await axios.get("http://37.252.0.155:8080/api/contest/get-all");
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://37.252.0.155:8080/api/contest/get-all", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         this.contests = response.data;
         response.data.forEach((contest) => {
           localStorage.setItem(`contest-${contest.ejudge_id}-tasks`, JSON.stringify(contest.tasks));
