@@ -56,7 +56,6 @@ export default {
                         this.$store.dispatch('updateUserRole', 'student');
                         this.$router.push('/StudentProfile');
                     } else if (userRole === 'teacher') {
-                        this.$store.dispatch('updateUserRole', 'student');
                         await this.fetchTeacherInfo();
                         localStorage.setItem('name', this.teacher.first_name);
                         localStorage.setItem('lastname', this.teacher.last_name);
