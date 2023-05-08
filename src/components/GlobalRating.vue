@@ -1,4 +1,4 @@
-<!-- ParcelsList.vue -->
+<!-- GlobalRating.vue -->
 <script>
 import SiteFooter from "@/components/SiteFooter.vue";
 import SiteHeader from "@/components/SiteHeader.vue";

@@ -16,10 +16,10 @@ export default {
     };
   },
   methods: {
-      saveContestId(ejudge_id, contest_name) {
-          localStorage.setItem("contestId", ejudge_id);
-          localStorage.setItem("contestName", contest_name);
-      },
+    saveContestId(ejudge_id, contest_name) {
+      localStorage.setItem("contestId", ejudge_id);
+      localStorage.setItem("contestName", contest_name);
+    },
     async fetchContests() {
       try {
         const token = localStorage.getItem("token");
