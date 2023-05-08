@@ -7,6 +7,11 @@ import axios from "axios";
 
 export default {
     name: "Contest",
+    computed: {
+        contestName() {
+            return localStorage.getItem('contestName');
+        },
+    },
     components: {
         SiteHeader,
         SiteFooter,
@@ -35,7 +40,7 @@ export default {
                 if (authData) {
                     const response = await axios.get("http://37.252.0.155:3000/parseTasks", {});
                     this.tasks = response.data.message;
-                    this.contestName = response.data.contestName;
+                    localStorage.setItem('contestName', response.data.contestName); // Сохраняем contestName в localStorage
                     this.updateTask(1);
                 } else {
                     console.error("Не удалось произвести авторизацию");
@@ -178,7 +183,7 @@ export default {
     <site-header></site-header>
     <div class="content-wrapper">
       <main>
-        <div class="main-headline">Контест 1</div>
+        <div class="main-headline">{{contestName}}</div>
         <div class="content-container">
           <section class="task-container">
             <div class="task-switch">
