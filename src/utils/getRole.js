@@ -10,10 +10,13 @@ export async function fetchUserRole(token) {
 
         if (response.data) {
             console.log('Роль пользователя успешно Получена:', response.data);
+            return response.data;
         } else {
             console.error('Ошибка: данные о роли пользователя не найдены');
+            return 'Данные о роли пользователя не найдены';
         }
     } catch (error) {
         console.error('Ошибка при получении роли пользователя с сервера:', error);
+        return `Ошибка при получении роли пользователя: ${error.message}`;
     }
 }

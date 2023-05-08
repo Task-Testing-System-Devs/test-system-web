@@ -2,82 +2,82 @@
 <script>
 import axios from 'axios';
 import SiteFooter from "@/components/SiteFooter.vue";
+import {fetchUserRole} from "@/utils/getRole";
 
 export default {
-  components: {SiteFooter},
-  data() {
-    return {
-      email: '',
-      password: '',
-      errorMessage: '',
-      teacher: {
-        id: "",
-        first_name: "",
-        last_name: "",
-        middle_name: "",
-        email: "",
-        department: "",
-        group: ""
-      }
-    };
-  },
-  methods: {
-    async fetchTeacherInfo() {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://37.252.0.155:8080/api/profile/get-teacher-info", {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        this.teacher = response.data;
-      } catch (error) {
-        console.error(error);
-      }
+    components: {SiteFooter},
+    data() {
+        return {
+            email: '',
+            password: '',
+            errorMessage: '',
+            teacher: {
+                id: "",
+                first_name: "",
+                last_name: "",
+                middle_name: "",
+                email: "",
+                department: "",
+                group: ""
+            }
+        };
     },
-    async submitForm() {
-      const requestData = {
-        email: this.email,
-        password: this.password
-      };
-      console.log('Request data:', requestData);
-      try {
-        const response = await axios.post('http://37.252.0.155:8080/api/auth/login', requestData, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        console.log('Response data:', response.data);
-        localStorage.setItem('token', response.data.token);
-        if (response.data) {
-          const role = response.data.role;
-          localStorage.setItem('role', response.data.role);
-          if (role === 'student') {
-            this.$router.push('/StudentProfile');
-          } else if (role === 'teacher') {
-            await this.fetchTeacherInfo();
-            localStorage.setItem('name', this.teacher.first_name);
-            localStorage.setItem('lastname', this.teacher.last_name);
-            this.$router.push('/AdminPanel');
-          } else {
-            this.errorMessage = 'Неизвестный тип пользователя';
-          }
-        } else {
-          this.errorMessage = 'Неверный адрес электронной почты или пароль';
+    methods: {
+        async fetchTeacherInfo() {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get("http://37.252.0.155:8080/api/profile/get-teacher-info", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                this.teacher = response.data;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async submitForm() {
+            const requestData = {
+                email: this.email,
+                password: this.password
+            };
+            console.log('Request data:', requestData);
+            try {
+                const response = await axios.post('http://37.252.0.155:8080/api/auth/login', requestData, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log('Response data:', response.data);
+                localStorage.setItem('token', response.data.token);
+                const userRole = await fetchUserRole(window.localStorage.getItem('token'));
+                if (response.data) {
+                    if (userRole === 'student') {
+                        this.$router.push('/StudentProfile');
+                    } else if (userRole === 'teacher') {
+                        await this.fetchTeacherInfo();
+                        localStorage.setItem('name', this.teacher.first_name);
+                        localStorage.setItem('lastname', this.teacher.last_name);
+                        this.$router.push('/AdminPanel');
+                    } else {
+                        this.errorMessage = 'Неизвестный тип пользователя';
+                    }
+                } else {
+                    this.errorMessage = 'Неверный адрес электронной почты или пароль';
+                }
+            } catch (error) {
+                console.log('Error:', error);
+                // Проверка ошибок, связанных с сетью или CORS
+                if (error.response) {
+                    this.errorMessage = 'Ошибка сервера, пожалуйста, попробуйте позже';
+                } else if (error.request) {
+                    this.errorMessage = 'Ошибка сети, пожалуйста, проверьте ваше интернет-соединение';
+                } else {
+                    this.errorMessage = 'Ошибка при отправке запроса';
+                }
+            }
         }
-      } catch (error) {
-        console.log('Error:', error);
-        // Проверка ошибок, связанных с сетью или CORS
-        if (error.response) {
-          this.errorMessage = 'Ошибка сервера, пожалуйста, попробуйте позже';
-        } else if (error.request) {
-          this.errorMessage = 'Ошибка сети, пожалуйста, проверьте ваше интернет-соединение';
-        } else {
-          this.errorMessage = 'Ошибка при отправке запроса';
-        }
-      }
-    }
-  },
+    },
 }
 </script>
 
@@ -113,7 +113,9 @@ export default {
   </div>
 </template>
 
-<style>
+
+
+            <style>
 .error-message {
   display: block;
   color: red;

@@ -6,34 +6,35 @@ import axios from "axios";
 import {fetchUserRole} from "@/utils/getRole";
 
 export default {
-  created() {
-    checkAuth(this.$router);
-    if (this.userRole === "teacher") {
-      this.fetchTeacherInfo();
-    } else if (this.userRole === "student") {
-      this.fetchStudentInfo();
-    }
-    fetchUserRole(localStorage.getItem('token'));
-  },
-  name: "SiteHeader",
-  data() {
-    return {
-      userRole: localStorage.getItem('role'),
-      user: {
-        id: "",
-        first_name: "",
-        last_name: "",
-        middle_name: "",
-        email: "",
-        department: "",
-        group: ""
-      },
-    };
-  },
-  methods: {
-    handleLogout() {
-      logout(this);
+    async created() {
+        checkAuth(this.$router);
+        this.userRole = await fetchUserRole(window.localStorage.getItem('token'));
+        if (this.userRole === "teacher") {
+            await this.fetchTeacherInfo();
+        } else if (this.userRole === "student") {
+            await this.fetchStudentInfo();
+        }
     },
+    name: "SiteHeader",
+    data() {
+        return {
+            userRole: "",
+            user: {
+                id: "",
+                first_name: "",
+                last_name: "",
+                middle_name: "",
+                email: "",
+                department: "",
+                group: ""
+            },
+        };
+    },
+    methods: {
+        fetchUserRole,
+        handleLogout() {
+            logout(this);
+        },
     async fetchTeacherInfo() {
       try {
         const token = localStorage.getItem("token");
@@ -105,6 +106,7 @@ export default {
     </div>
   </header>
 </template>
+
 
 <style>
 .left-section {
