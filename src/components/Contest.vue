@@ -120,6 +120,7 @@ export default {
           const response = await axios.post("http://37.252.0.155:3000/handleSolution", {
             solutionFileBase64: base64File,
             taskID: this.currentTask.probId,
+            language: this.selectedLanguage,
           });
           console.log(response.data);
           await this.fetchResult(code); // Вызываем метод fetchResult после отправки решения
@@ -212,10 +213,22 @@ export default {
             <div class="submit-container">
               <input type="file" id="solution" name="solution" @change="onFileChange">
               <select name="language" id="language" @change="onLanguageChange">
-                <option value="cpp">C++</option>
-                <option value="python">Python</option>
-                <option value="java">Java</option>
-                <option value="javascript">JavaScript</option>
+                <option value=""></option>
+                <option value="2">gcc - GNU C 11.3.0</option>
+                <option value="3">g++ - GNU C++ 11.3.0</option>
+                <option value="13">python - Python 2.7.18</option>
+                <option value="14">perl - Perl 5.34.0</option>
+                <option value="23">python3 - Python3 3.10.6</option>
+                <option value="25">make - Make 4.3</option>
+                <option value="50">nasm-x86 - NASM 2.15.05</option>
+                <option value="51">clang - clang C 14.0.0-1ubuntu1</option>
+                <option value="52">clang++ - clang C++ 14.0.0-1ubuntu1</option>
+                <option value="54">make-vg - Make (valgrind) 4.3</option>
+                <option value="57">gcc-32 - GNU C (32 bit) 11.3.0</option>
+                <option value="61">clang-32 - clang C (32 bit) 14.0.0-1ubuntu1</option>
+                <option value="66">gas-32 - GNU AS (32 bit) 11.3.0</option>
+                <option value="67">gas - GNU AS 11.3.0</option>
+                <option value="77">custom - Custom 1</option>
               </select>
               <button type="submit" @click.prevent="submitSolution">Отправить</button>
               <!-- Надпись "Обработка..." будет отображаться, когда processing имеет значение true -->
