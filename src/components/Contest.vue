@@ -21,6 +21,8 @@ export default {
             currentTask: null,
             taskTitle: "",
             taskDescription: "",
+            contestName: localStorage.getItem('contestName'),
+            selectedLanguage: "cpp",
         };
     },
     created() {
@@ -33,6 +35,7 @@ export default {
                 if (authData) {
                     const response = await axios.get("http://37.252.0.155:3000/parseTasks", {});
                     this.tasks = response.data.message;
+                    this.contestName = response.data.contestName;
                     this.updateTask(1);
                 } else {
                     console.error("Не удалось произвести авторизацию");
@@ -40,6 +43,9 @@ export default {
             } catch (error) {
                 console.error("Ошибка при получении задач с сервера:", error);
             }
+        },
+        onLanguageChange(event) {
+            this.selectedLanguage = event.target.value;
         },
         updateTask(taskNumber) {
             const task = this.tasks.find((task) => task.probId === String(taskNumber));
@@ -93,10 +99,18 @@ export default {
                 reader.onerror = (error) => reject(error);
             });
         },
-
+        async readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsText(file, 'UTF-8');
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = (error) => reject(error);
+            });
+        },
         async submitSolution() {
             if (this.selectedFile) {
                 const base64File = await this.convertFileToBase64(this.selectedFile);
+                const code = await this.readFileAsText(this.selectedFile);
                 try {
                     this.processing = true; // Устанавливаем processing в true перед отправкой решения
                     const response = await axios.post("http://37.252.0.155:3000/handleSolution", {
@@ -104,7 +118,7 @@ export default {
                         taskID: this.currentTask.probId,
                     });
                     console.log(response.data);
-                    await this.fetchResult(); // Вызываем метод fetchResult после отправки решения
+                    await this.fetchResult(code); // Вызываем метод fetchResult после отправки решения
                 } catch (error) {
                     console.error("Ошибка при отправке решения:", error);
                 } finally {
@@ -114,13 +128,43 @@ export default {
                 console.error("Файл не выбран");
             }
         },
+        async submitSolutionToServer(code)  {
+            try {
+                console.log(code);
+                const response = await axios.post(
+                    "http://37.252.0.155:8080/api/solutions/add",
+                    {
+                        code: code,
+                        language: this.selectedLanguage,
+                        status: this.solutionStatus,
+                        used_time: 0.2,
+                        used_memory: 2.8,
+                        error_test: this.failureTest,
+                        contest_name: localStorage.getItem('contestName'),
+                        task_name: this.taskTitle,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                console.log(response.data);
+            } catch (error) {
+                console.error("Ошибка при отправке решения на сервер:", error);
+            }
+        },
 
-        async fetchResult() {
+        async fetchResult(code) {
             try {
                 const response = await axios.get("http://37.252.0.155:3000/getResult");
-                const {status, error} = response.data;
+                const { status, error } = response.data;
                 this.solutionStatus = status;
                 this.failureTest = error;
+
+                // Вызываем метод submitSolutionToServer после получения результата
+                await this.submitSolutionToServer(code);
             } catch (error) {
                 console.error("Ошибка при получении результата:", error);
             }
@@ -163,7 +207,7 @@ export default {
             </ol>
             <div class="submit-container">
               <input type="file" id="solution" name="solution" @change="onFileChange">
-              <select name="language" id="language">
+              <select name="language" id="language" @change="onLanguageChange">
                 <option value="cpp">C++</option>
                 <option value="python">Python</option>
                 <option value="java">Java</option>
