@@ -53,11 +53,14 @@ export default {
                 const userRole = await fetchUserRole(window.localStorage.getItem('token'));
                 if (response.data) {
                     if (userRole === 'student') {
+                        this.$store.dispatch('updateUserRole', 'student');
                         this.$router.push('/StudentProfile');
                     } else if (userRole === 'teacher') {
+                        this.$store.dispatch('updateUserRole', 'student');
                         await this.fetchTeacherInfo();
                         localStorage.setItem('name', this.teacher.first_name);
                         localStorage.setItem('lastname', this.teacher.last_name);
+                        this.$store.dispatch('updateUserRole', 'teacher');
                         this.$router.push('/AdminPanel');
                     } else {
                         this.errorMessage = 'Неизвестный тип пользователя';

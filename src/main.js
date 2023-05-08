@@ -3,8 +3,10 @@ import App from './App.vue'
 
 import './assets/main.css'
 
-import router from './router' // Импортируйте ваш router
+import router from './router'
+import store from './store'
 
 createApp(App)
-    .use(router) // Используйте ваш router
+    .use(router)
+    .use(store)
     .mount('#app')

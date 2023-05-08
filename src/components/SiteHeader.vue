@@ -3,12 +3,11 @@
 import {logout} from "@/utils/logout";
 import checkAuth from "@/utils/checkAuth";
 import axios from "axios";
-import {fetchUserRole} from "@/utils/getRole";
 
 export default {
     async created() {
         checkAuth(this.$router);
-        this.userRole = await fetchUserRole(window.localStorage.getItem('token'));
+        this.userRole = this.$store.state.userRole;
         if (this.userRole === "teacher") {
             await this.fetchTeacherInfo();
         } else if (this.userRole === "student") {
@@ -31,7 +30,6 @@ export default {
         };
     },
     methods: {
-        fetchUserRole,
         handleLogout() {
             logout(this);
         },
