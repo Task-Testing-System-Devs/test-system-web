@@ -40,7 +40,6 @@ export default {
                 if (authData) {
                     const response = await axios.get("http://37.252.0.155:3000/parseTasks", {});
                     this.tasks = response.data.message;
-                    localStorage.setItem('contestName', response.data.contestName); // Сохраняем contestName в localStorage
                     this.updateTask(1);
                 } else {
                     console.error("Не удалось произвести авторизацию");
@@ -135,7 +134,7 @@ export default {
         },
         async submitSolutionToServer(code)  {
             try {
-                console.log(code);
+                console.log(code, this.selectedLanguage, this.solutionStatus, this.failureTest, this.taskTitle);
                 const response = await axios.post(
                     "http://37.252.0.155:8080/api/solutions/add",
                     {
