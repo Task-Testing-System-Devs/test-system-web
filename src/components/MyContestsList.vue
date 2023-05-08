@@ -16,6 +16,9 @@ export default {
     };
   },
   methods: {
+      saveContestId(ejudge_id) {
+          localStorage.setItem("contestId", ejudge_id);
+      },
     async fetchContests() {
       try {
         const token = localStorage.getItem("token");
@@ -63,7 +66,7 @@ export default {
                 <td>{{ new Date(contest.finish_time).toLocaleString() }}</td>
                 <td>
                   <router-link :to="{ name: 'Contest', params: { id: contest.id } }">
-                    <button>Перейти</button>
+                    <button @click="saveContestId(contest.ejudge_id)">Перейти</button>
                   </router-link>
                 </td>
               </tr>
