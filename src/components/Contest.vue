@@ -11,6 +11,18 @@ export default {
     contestName() {
       return localStorage.getItem('contestName');
     },
+    formattedInputExamples() {
+      if (this.currentTask && this.currentTask.inputExamples) {
+        return this.currentTask.inputExamples.join("\n");
+      }
+      return "";
+    },
+    formattedOutputExamples() {
+      if (this.currentTask && this.currentTask.outputExamples) {
+        return this.currentTask.outputExamples.join("\n");
+      }
+      return "";
+    }
   },
   components: {
     SiteHeader,
@@ -38,7 +50,7 @@ export default {
       try {
         const authData = await this.authenticate();
         if (authData) {
-          const response = await axios.get("http://37.252.0.155:3000/parseTasks", {});
+          const response = await axios.get("http://localhost:3000/parseTasks", {});
           this.tasks = response.data.message;
           this.updateTask(1);
         } else {
@@ -67,7 +79,7 @@ export default {
         const contestID = localStorage.getItem('contestId');
         console.log("Загружаю контест с id: ", contestID);
         const authResponse = await axios.post(
-            "http://37.252.0.155:3000/auth",
+            "http://localhost:3000/auth",
             {
               login: "ejudge",
               password: "ejudge",
@@ -117,7 +129,7 @@ export default {
         const code = await this.readFileAsText(this.selectedFile);
         try {
           this.processing = true; // Устанавливаем processing в true перед отправкой решения
-          const response = await axios.post("http://37.252.0.155:3000/handleSolution", {
+          const response = await axios.post("http://localhost:3000/handleSolution", {
             solutionFileBase64: base64File,
             taskID: this.currentTask.probId,
             language: this.selectedLanguage,
@@ -163,7 +175,7 @@ export default {
 
     async fetchResult(code) {
       try {
-        const response = await axios.get("http://37.252.0.155:3000/getResult");
+        const response = await axios.get("http://localhost:3000/getResult");
         const {status, error} = response.data;
         this.solutionStatus = status;
         this.failureTest = error;
@@ -193,13 +205,7 @@ export default {
             <h2 id="task-title">{{ taskTitle }}</h2>
             <p id="task-description" class="task-desc">{{ taskDescription }}</p>
             <h3>Примеры входных и выходных данных:</h3>
-            <pre id="task-io">
-          <span class="io-header">Ввод:</span>
-          <span class="input-example">4 3 1 2 1 4 0 2 2 0 4 3 2 0 2 1 0
-            </span>
-          <span class="io-header">Вывод:</span>
-          <span class="output-example">2</span>
-          </pre>
+            <pre id="task-io"><span class="io-header">Ввод:</span><span class="input-example">{{ formattedInputExamples }}</span><span class="io-header">Вывод:</span><span class="output-example">{{ formattedOutputExamples }}</span></pre>
             <p>Сложность: <span class="difficulty">20</span></p>
             <h3>Последняя посылка: <span class="last-status">{{ solutionStatus }}</span></h3>
             <h3>Ошибка на тесте: <span class="last-status">{{ failureTest }}</span></h3>
