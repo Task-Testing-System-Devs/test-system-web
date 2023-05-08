@@ -5,7 +5,7 @@ import SiteHeader from "@/components/SiteHeader.vue";
 import axios from 'axios';
 
 export default {
-  name: "AdminPanel",
+  name: "GlobalRating",
   components: {
     SiteHeader,
     SiteFooter
@@ -54,7 +54,7 @@ export default {
           <button @click="changeRating('tasks')">Рейтинг по задачам</button>
         </div>
         <div class="myposts-container">
-          <p>Общее количество человек: {{ratingData.length}}</p>
+          <p>Общее количество человек: {{ ratingData.length }}</p>
           <div class="posts-list">
             <table>
               <thead>

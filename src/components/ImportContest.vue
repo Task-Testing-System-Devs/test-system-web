@@ -76,8 +76,8 @@ export default {
       } catch (error) {
         console.error(error);
       } finally {
-      this.processing = false;
-    }
+        this.processing = false;
+      }
     }
   },
 };
@@ -123,13 +123,16 @@ export default {
 .processing-status {
   color: orange;
 }
+
 .contest-added-status {
   color: green;
 }
+
 .form-group {
   margin-bottom: 20px;
   margin-top: 20px;
 }
+
 .form-group input {
   border: 1px solid #ccc;
   border-radius: 5px;

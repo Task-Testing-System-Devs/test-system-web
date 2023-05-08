@@ -5,7 +5,7 @@ import SiteHeader from "@/components/SiteHeader.vue";
 import axios from 'axios';
 
 export default {
-  name: "AdminPanel",
+  name: "Contest",
   components: {
     SiteHeader,
     SiteFooter

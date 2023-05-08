@@ -6,50 +6,50 @@ import SiteHeader from "@/components/SiteHeader.vue";
 import axios from "axios";
 
 export default {
-    name: "AdminPanel",
-    components: {
-        SiteHeader,
-        SiteFooter
-    },
-    data() {
-        return {
-            parcels: [],
-            modalOpen: false,
-            selectedCode: ''
-        };
-    },
-    computed: {
-        mainHeadline() {
-            const userRole = this.$store.state.userRole;
-            return userRole === 'teacher' ? 'Все посылки' : 'Мои посылки';
-        }
-    },
-    methods: {
-        async fetchParcels() {
-            try {
-                const userRole = this.$store.state.userRole; // Получаем роль пользователя
-                const endpoint = userRole === 'teacher' ? 'get-all' : 'get-all-user'; // Определяем эндпоинт в зависимости от роли пользователя
-                const response = await axios.get(`http://37.252.0.155:8080/api/solutions/${endpoint}`, {
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                this.parcels = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        openCodeModal(code) {
-            this.selectedCode = code;
-            this.modalOpen = true;
-        },
-        closeModal() {
-            this.modalOpen = false;
-        },
-    },
-    created() {
-        this.fetchParcels();
+  name: "ParcelsList",
+  components: {
+    SiteHeader,
+    SiteFooter
+  },
+  data() {
+    return {
+      parcels: [],
+      modalOpen: false,
+      selectedCode: ''
+    };
+  },
+  computed: {
+    mainHeadline() {
+      const userRole = this.$store.state.userRole;
+      return userRole === 'teacher' ? 'Все посылки' : 'Мои посылки';
     }
+  },
+  methods: {
+    async fetchParcels() {
+      try {
+        const userRole = this.$store.state.userRole; // Получаем роль пользователя
+        const endpoint = userRole === 'teacher' ? 'get-all' : 'get-all-user'; // Определяем эндпоинт в зависимости от роли пользователя
+        const response = await axios.get(`http://37.252.0.155:8080/api/solutions/${endpoint}`, {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        this.parcels = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    openCodeModal(code) {
+      this.selectedCode = code;
+      this.modalOpen = true;
+    },
+    closeModal() {
+      this.modalOpen = false;
+    },
+  },
+  created() {
+    this.fetchParcels();
+  }
 };
 </script>
 
@@ -60,7 +60,7 @@ export default {
       <main>
         <div class="main-headline">{{ mainHeadline }}</div>
         <div class="myposts-container">
-          <p>Общее количество посылок: {{parcels.length}}</p>
+          <p>Общее количество посылок: {{ parcels.length }}</p>
           <div class="posts-list">
             <div v-if="modalOpen" class="modal-backdrop" @click="closeModal">
               <div class="modal-content" @click.stop>
@@ -91,7 +91,7 @@ export default {
                 </td>
                 <td>{{ parcel.language }}</td>
                 <td>{{ parcel.status }}</td>
-                <td>{{ parcel.used_time}} с.</td>
+                <td>{{ parcel.used_time }} с.</td>
                 <td>{{ parcel.used_memory }} МБ.</td>
                 <td>{{ parcel.error_test }}</td>
                 <td>{{ parcel.contest_name }}</td>

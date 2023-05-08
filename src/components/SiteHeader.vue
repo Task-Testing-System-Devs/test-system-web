@@ -5,34 +5,34 @@ import checkAuth from "@/utils/checkAuth";
 import axios from "axios";
 
 export default {
-    async created() {
-        checkAuth(this.$router);
-        this.userRole = this.$store.state.userRole;
-        if (this.userRole === "teacher") {
-            await this.fetchTeacherInfo();
-        } else if (this.userRole === "student") {
-            await this.fetchStudentInfo();
-        }
+  async created() {
+    checkAuth(this.$router);
+    this.userRole = this.$store.state.userRole;
+    if (this.userRole === "teacher") {
+      await this.fetchTeacherInfo();
+    } else if (this.userRole === "student") {
+      await this.fetchStudentInfo();
+    }
+  },
+  name: "SiteHeader",
+  data() {
+    return {
+      userRole: "",
+      user: {
+        id: "",
+        first_name: "",
+        last_name: "",
+        middle_name: "",
+        email: "",
+        department: "",
+        group: ""
+      },
+    };
+  },
+  methods: {
+    handleLogout() {
+      logout(this);
     },
-    name: "SiteHeader",
-    data() {
-        return {
-            userRole: "",
-            user: {
-                id: "",
-                first_name: "",
-                last_name: "",
-                middle_name: "",
-                email: "",
-                department: "",
-                group: ""
-            },
-        };
-    },
-    methods: {
-        handleLogout() {
-            logout(this);
-        },
     async fetchTeacherInfo() {
       try {
         const token = localStorage.getItem("token");
