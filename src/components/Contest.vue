@@ -150,12 +150,12 @@ export default {
     },
     async submitSolutionToServer(code) {
       try {
-        console.log(code, this.selectedLanguage, this.solutionStatus, this.failureTest, this.taskTitle);
+        console.log(code, this.languageName, this.solutionStatus, this.failureTest, this.taskTitle);
         const response = await axios.post(
             "http://37.252.0.155:8080/api/solutions/add",
             {
               code: code,
-              language: this.selectedLanguage,
+              language: this.languageName,
               status: this.solutionStatus,
               used_time: 0.2,
               used_memory: 2.8,
