@@ -40,6 +40,8 @@ export default {
       taskDescription: "",
       contestName: localStorage.getItem('contestName'),
       selectedLanguage: "cpp",
+      languageName: "python3",
+      submissions: [],
     };
   },
   created() {
@@ -50,7 +52,7 @@ export default {
       try {
         const authData = await this.authenticate();
         if (authData) {
-          const response = await axios.get("http://localhost:3000/parseTasks", {});
+          const response = await axios.get("http://37.252.0.155:3000/parseTasks", {});
           this.tasks = response.data.message;
           this.updateTask(1);
         } else {
@@ -62,6 +64,7 @@ export default {
     },
     onLanguageChange(event) {
       this.selectedLanguage = event.target.value;
+      this.languageName = event.target.options[event.target.selectedIndex].text;
     },
     updateTask(taskNumber) {
       const task = this.tasks.find((task) => task.probId === String(taskNumber));
@@ -79,7 +82,7 @@ export default {
         const contestID = localStorage.getItem('contestId');
         console.log("Загружаю контест с id: ", contestID);
         const authResponse = await axios.post(
-            "http://localhost:3000/auth",
+            "http://37.252.0.155:3000/auth",
             {
               login: "ejudge",
               password: "ejudge",
@@ -129,7 +132,7 @@ export default {
         const code = await this.readFileAsText(this.selectedFile);
         try {
           this.processing = true; // Устанавливаем processing в true перед отправкой решения
-          const response = await axios.post("http://localhost:3000/handleSolution", {
+          const response = await axios.post("http://37.252.0.155:3000/handleSolution", {
             solutionFileBase64: base64File,
             taskID: this.currentTask.probId,
             language: this.selectedLanguage,
@@ -168,6 +171,13 @@ export default {
             }
         );
         console.log(response.data);
+
+        this.submissions.unshift({
+          attempt: this.submissions.length + 1,
+          language: this.languageName,
+          status: this.solutionStatus,
+        });
+        this.submissions = this.submissions.slice(0, 4);
       } catch (error) {
         console.error("Ошибка при отправке решения на сервер:", error);
       }
@@ -175,7 +185,7 @@ export default {
 
     async fetchResult(code) {
       try {
-        const response = await axios.get("http://localhost:3000/getResult");
+        const response = await axios.get("http://37.252.0.155:3000/getResult");
         const {status, error} = response.data;
         this.solutionStatus = status;
         this.failureTest = error;
@@ -199,9 +209,17 @@ export default {
         <div class="content-container">
           <section class="task-container">
             <div class="task-switch">
-              <button class="task-button" id="task1" @click="updateTask(1)">1 - N/A</button>
-              <button class="task-button" id="task2" @click="updateTask(2)">2 - N/A</button>
+              <button
+                  v-for="(task, index) in tasks"
+                  :key="task.probId"
+                  class="task-button"
+                  :id="'task' + task.probId"
+                  @click="updateTask(task.probId)"
+              >
+                {{ index + 1 }} - {{ task.title }}
+              </button>
             </div>
+
             <h2 id="task-title">{{ taskTitle }}</h2>
             <p id="task-description" class="task-desc">{{ taskDescription }}</p>
             <h3>Примеры входных и выходных данных:</h3>
@@ -210,12 +228,24 @@ export default {
             <h3>Последняя посылка: <span class="last-status">{{ solutionStatus }}</span></h3>
             <h3>Ошибка на тесте: <span class="last-status">{{ failureTest }}</span></h3>
             <h3>Последние 4 посылки:</h3>
-            <ol class="submissions">
-              <li>Посылка 1 - RE</li>
-              <li>Посылка 2 - WA1</li>
-              <li>Посылка 3 - WA9</li>
-              <li>Посылка 4 - OK</li>
-            </ol>
+            <div class="table-container">
+              <table class="submissions">
+                <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Язык</th>
+                  <th>Вердикт</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="submission in submissions" :key="submission.attempt">
+                  <td>{{ submission.attempt }}</td>
+                  <td>{{ submission.language }}</td>
+                  <td>{{ submission.status }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
             <div class="submit-container">
               <input type="file" id="solution" name="solution" @change="onFileChange">
               <select name="language" id="language" @change="onLanguageChange">
@@ -273,16 +303,45 @@ pre {
   font-weight: bold;
 }
 
-.submissions {
-  padding-left: 20px;
-  display: inline-block;
-  text-align: left;
-}
-
 .submit-container {
   margin-top: 20px;
   display: inline-block;
   text-align: left;
+}
+
+.table-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.submissions {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ffffff;
+  background-color: #252E40;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.submissions th,
+.submissions td {
+  border: 1px solid #ffffff;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.submissions th {
+  background-color: #1C2433;
+  font-weight: bold;
+}
+
+.submissions tbody tr:nth-child(odd) {
+  background-color: #2D3750;
+}
+
+.submissions tbody tr:hover {
+  background-color: #38425C;
+  cursor: pointer;
 }
 
 input[type="file"] {
