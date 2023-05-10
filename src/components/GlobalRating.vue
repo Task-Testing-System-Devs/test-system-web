@@ -46,8 +46,6 @@ export default {
           headers: {Authorization: `Bearer ${token}`},
           responseType: "blob",
         });
-
-        // Добавление BOM
         const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
         const file = new Blob([bom, response.data], { type: "text/csv;charset=utf-8" });
 
