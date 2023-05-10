@@ -12,8 +12,9 @@ export default {
   },
   data() {
     return {
-      ratingType: 'marks',
-      ratingData: []
+      ratingType: "marks",
+      ratingData: [],
+      error: null,
     };
   },
   methods: {
@@ -31,8 +32,33 @@ export default {
         this.ratingData = response.data;
       } catch (error) {
         console.error('Ошибка при получении рейтинга:', error);
+        this.error = "Ошибка при получении рейтинга";
       }
     },
+    async downloadCSV() {
+      const token = localStorage.getItem("token");
+      const endpoint =
+          this.ratingType === "marks"
+              ? "http://37.252.0.155:8080/api/grade/by-marks/download-csv"
+              : "http://37.252.0.155:8080/api/grade/by-tasks/download-csv";
+      try {
+        const response = await axios.get(endpoint, {
+          headers: {Authorization: `Bearer ${token}`},
+          responseType: "blob",
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `${this.ratingType}-rating.csv`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } catch (error) {
+        console.error("Ошибка при получении CSV файла:", error);
+        this.error = "Ошибка при получении CSV файла";
+      }
+    },
+
     async changeRating(type) {
       this.ratingType = type;
       await this.getRatingData();
@@ -52,7 +78,9 @@ export default {
         <div class="main-headline">
           <button @click="changeRating('marks')">Рейтинг по оценкам</button>
           <button @click="changeRating('tasks')">Рейтинг по задачам</button>
+          <button class="download-csv" @click="downloadCSV">Выгрузить в .csv</button>
         </div>
+        <p class="error-message">{{ error }}</p>
         <div class="myposts-container">
           <p>Общее количество человек: {{ ratingData.length }}</p>
           <div class="posts-list">
@@ -108,6 +136,22 @@ export default {
   margin-right: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.main-headline button.download-csv {
+  background-color: #4CAF50;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.main-headline button.download-csv:hover {
+  background-color: #45a049;
 }
 
 .main-headline button:hover {
