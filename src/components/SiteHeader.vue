@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       userRole: "",
+      isNavVisible: false,
       user: {
         id: "",
         first_name: "",
@@ -65,13 +66,13 @@ export default {
 </script>
 
 <template>
-  <header>
+  <header v-cloak>
     <div class="header-container">
       <div class="left-section">
         <img class="logo" src="../assets/logo.svg" width="75" height="75" alt="logo"/>
         <div class="logo">Лицей НИУ ВШЭ</div>
       </div>
-      <div class="nav-container">
+      <div class="nav-container" v-bind:class="{ 'show': isNavVisible }">
         <nav>
           <ul>
             <li v-if="userRole === 'student'">
@@ -89,8 +90,16 @@ export default {
           </ul>
         </nav>
       </div>
-      <div class="username">
-        <a href="#">{{ user.first_name }} {{ user.middle_name }}</a>
+      <button class="hamburger" @click="isNavVisible = !isNavVisible">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
+      <div class="username" style="min-width: 200px;">
+        <a href="#">
+          <span v-if="user.first_name">{{ user.first_name }} {{ user.middle_name }}</span>
+          <span v-else>Загрузка...</span>
+        </a>
         <div class="user-menu">
           <router-link v-if="userRole === 'teacher'" to="/AdminPanel">
             <button>Админ-панель</button>
@@ -101,6 +110,7 @@ export default {
           <button @click="handleLogout">Выйти</button>
         </div>
       </div>
+
     </div>
   </header>
 </template>
@@ -135,6 +145,8 @@ export default {
 nav ul {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -228,5 +240,100 @@ nav ul li {
 
 .username .user-menu button:hover {
   background-color: #444;
+}
+.hamburger {
+  display: none;
+  position: absolute;
+  right: 15px;
+  z-index: 1;
+}
+
+.hamburger-box {
+  width: 40px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+}
+
+.hamburger-inner {
+  display: block;
+  top: 50%;
+  margin-top: -2px;
+}
+
+.hamburger-inner, .hamburger-inner:before, .hamburger-inner:after {
+  width: 40px;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.hamburger-inner:before, .hamburger-inner:after {
+  content: "";
+  display: block;
+}
+
+.hamburger-inner:before {
+  top: -10px;
+}
+
+.hamburger-inner:after {
+  bottom: -10px;
+}
+
+.hamburger.show .hamburger-inner {
+  transform: rotate(45deg);
+}
+
+.hamburger.show .hamburger-inner:before {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+.hamburger.show .hamburger-inner:after {
+  transform: rotate(-45deg);
+  bottom: 0;
+}
+
+.nav-container {
+  margin-top: 30px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  transition: all 0.3s;
+  transform: translateY(-120%);
+  display: flex;
+  justify-content: center;
+}
+
+
+.nav-container.show {
+  transform: translateY(0%);
+}
+
+@media screen and (min-width: 768px) {
+  nav ul {
+    flex-direction: row;
+  }
+  .nav-container, .hamburger {
+    position: static;
+    transform: none;
+  }
+  .nav-container {
+    display: flex;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  .header-container {
+    flex-direction: row;
+  }
 }
 </style>
